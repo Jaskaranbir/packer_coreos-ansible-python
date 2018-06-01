@@ -1,0 +1,82 @@
+{
+  "variables": {
+    "channel": "stable",
+    "coreos_version": "1745.5.0",
+    "coreos_human_version": "1745-5-0",
+    "checksum_type": "md5",
+    "checksum": "a622e92e3f41b2946b555a790682bb20",
+    "ignition_config_filename": "config.ign"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "vm_name": "coreos_ansible_{{user `channel`}}",
+      "iso_url": "http://{{user `channel`}}.release.core-os.net/amd64-usr/{{user `coreos_version`}}/coreos_production_iso_image.iso",
+      "iso_checksum": "{{user `checksum`}}",
+      "iso_checksum_type": "{{user `checksum_type`}}",
+      "headless": false,
+      "http_directory": "files",
+      "ssh_port": 22,
+      "ssh_username": "core",
+      "ssh_private_key_file": "files/keys/vagrant",
+      "ssh_wait_timeout": "10m",
+      "guest_os_type": "Linux26_64",
+      "hard_drive_interface": "sata",
+      "disk_size": 20480,
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "1"
+        ]
+      ],
+      "guest_additions_mode": "disable",
+      "boot_command": [
+        "sudo -i<enter>",
+        "systemctl stop sshd.socket<enter>",
+        "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/box/{{user `ignition_config_filename`}}<enter>",
+        "coreos-install -d /dev/sda -C {{user `channel`}} -i {{user `ignition_config_filename`}}<enter>",
+        "eject<enter>",
+        "rm {{user `ignition_config_filename`}}<enter>",
+        "reboot<enter>"
+      ],
+      "boot_wait": "1m30s",
+      "shutdown_command": "sudo -S shutdown -P now",
+      "output_directory": "builds/coreos_ansible_{{user `channel`}}_{{ user `coreos_human_version`}}-virtualbox",
+      "virtualbox_version_file": ".virtualbox_version"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "scripts/install_python_ansible.sh",
+        "scripts/install_docker-compose.sh",
+        "tests/basic_test_suite.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos_ansible_{{user `channel`}}_{{ user `coreos_human_version`}}.box",
+      "vagrantfile_template": "files/box/Vagrantfile",
+      "include": [
+        "files/box/change_host_name.rb",
+        "files/box/configure_networks.rb"
+      ]
+    },
+    {
+      "type": "manifest",
+      "output": "manifest.json",
+      "strip_path": true
+    }
+  ]
+}

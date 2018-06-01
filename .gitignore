@@ -1,0 +1,9 @@
+.history
+.vagrant
+.vscode
+
+builds
+packer_cache
+
+*.log
+manifest.json*
