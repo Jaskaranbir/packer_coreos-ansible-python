@@ -88,12 +88,6 @@ Vagrant.configure("2") do |config|
     config.vm.define vm_name = "%s-%02d" % [$instance_name_prefix, i] do |config|
       config.vm.hostname = vm_name
 
-      # Default .bashrc in core-os is a readonly symlink
-      # So we hard-copy the actual .bashrc and replace the symlink
-      config.vm.provision :shell,
-          inline: "rm #{$user_home_path}/.bashrc && \
-                   cp /usr/share/skel/.bashrc #{$user_home_path}"
-
       # Automatically set current-dir to /vagrant on vagrant ssh
       config.vm.provision :shell,
           inline: "echo 'cd /vagrant' >> #{$user_home_path}/.bashrc"

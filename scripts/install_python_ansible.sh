@@ -1,4 +1,5 @@
 ACTIVE_PYTHON_VERSION=3.6.0.3600
+ACTIVE_PYTHON_INSTALL_PATH=/opt/bin
 
 # Download ActivePython
 function get_active_python() {
@@ -10,29 +11,26 @@ function get_active_python() {
 
 # Extract and install ActivePython
 function install_active_python() {
+  echo "=> Installing ActivePython."
   mkdir ActivePython
   tar -C ActivePython --strip-components=1 -xvf ActivePython.tar.gz
 
-  sudo mkdir -p /opt/bin/active_python
-  sudo ActivePython/install.sh -I /opt/bin/active_python
-  rm -rf ActivePython
-  rm ActivePython.tar.gz
-}
+  # Unpack and install ActivePython
+  sudo mkdir -p $ACTIVE_PYTHON_INSTALL_PATH/active_python
+  sudo ActivePython/install.sh -I $ACTIVE_PYTHON_INSTALL_PATH/active_python
+  sudo rm -rf ActivePython
+  sudo rm ActivePython.tar.gz
 
-# Python and PIP symlinks
-function create_symlinks() {
-  sudo ln -sf /opt/bin/active_python/bin/easy_install /opt/bin/easy_install
+  sudo ln -sf $ACTIVE_PYTHON_INSTALL_PATH/active_python/bin/python3.6 /opt/bin/python
 
-  sudo ln -sf /opt/bin/active_python/bin/python3 /opt/bin/python3
-  sudo ln -sf /opt/bin/active_python/bin/python3.6 /opt/bin/python3.6
-  sudo ln -sf /opt/bin/active_python/bin/python3.6 /opt/bin/python
-
-  sudo ln -sf /opt/bin/active_python/bin/pip3 /opt/bin/pip
-}
-
-function install_ansible() {
-  sudo pip install ansible
-  sudo ln -s /opt/bin/active_python/bin/ansible /opt/bin/ansible
+  echo "=> Adding ActivePython binaries to PATH."
+  # Local .bashrc is read-only a symlink by default
+  rm $HOME/.bashrc
+  touch $HOME/.bashrc
+  sudo chmod 644 $HOME/.bashrc
+  # Add installed PIP packages to local PATH
+  echo "export PATH=$PATH:$ACTIVE_PYTHON_INSTALL_PATH/active_python/bin" >> $HOME/.bashrc
+  source $HOME/.bashrc
 }
 
 # res verifies checksum for downloaded ActivePython archive
@@ -51,15 +49,17 @@ do
 done
 
 if (( cur_retries == max_retries )); then
-  echo "---------------------------------------------------------"
+  echo "-------------------------------------------------- -------"
   echo "Failed downloading ActivePython."
   echo "---------------------------------------------------------"
 else
   install_active_python
-  create_symlinks
 
-  # Because ActivePython doesn't necessarily have the latest PIP version
-  sudo pip install --upgrade pip
+  # Set current PATH for sudo also
+  # This will also make "pip" command available, instead of "pip3"
+  sudo env "PATH=$PATH" pip3 install --upgrade pip
 
-  install_ansible
+  echo "=> Installing Ansible."
+  sudo env "PATH=$PATH" pip --version
+  sudo env "PATH=$PATH" pip install ansible
 fi

@@ -20,7 +20,9 @@ function test() {
   echo "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
   echo "Testing: $1"
   echo "Command: $2"
-  sudo /bin/bash -c "$2" > /dev/null
+  /bin/bash -c "$2" > /dev/null \
+    || (echo "Command errored, trying again with sudo..." \
+        && sudo /bin/bash -c "$2" > /dev/null)
   result=$?
 
   if (( result != 0 )); then
