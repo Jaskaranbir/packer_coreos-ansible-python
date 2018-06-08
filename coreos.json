@@ -69,6 +69,7 @@
       "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos_ansible_{{user `channel`}}_{{ user `coreos_human_version`}}.box",
       "vagrantfile_template": "files/box/Vagrantfile",
       "include": [
+        "files/box/base_mac.rb",
         "files/box/change_host_name.rb",
         "files/box/configure_networks.rb"
       ]

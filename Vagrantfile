@@ -105,6 +105,8 @@ Vagrant.configure("2") do |config|
         end
       end
 
+      # $expose_docker_tcp should be the number representing
+      # host port to forward docker_tcp to
       if $expose_docker_tcp
         config.vm.network "forwarded_port",
             guest: 2375,
@@ -133,11 +135,6 @@ Vagrant.configure("2") do |config|
       ip = "172.17.8.#{i+100}"
       config.vm.network :private_network, ip: ip
 
-      # Uncomment below to enable NFS for sharing the host machine into the coreos-vagrant VM.
-      # config.vm.synced_folder ".", "/home/core/share",
-          # id: "core",
-          # :nfs => true,
-          # :mount_options => ['nolock,vers=3,udp']
       $shared_folders.each_with_index do |share, index|
         config.vm.synced_folder share[:host_path], share[:guest_path],
             id: "core-share%02d" % index,
