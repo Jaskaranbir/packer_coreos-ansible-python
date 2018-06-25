@@ -1,6 +1,16 @@
+1.2.0 (June 25, 2018)
+====================
+* Updated base Core-OS image to 1745.7.0
+* Disable update-engine.service and locksmithd.service (no automatic system-updates or reboots)
+
+1.1.0 (June 8, 2018)
+====================
+* Fix Vagrant private-network configuration not working
+
 1.0.1 (June 4, 2018)
 ====================
-* Add PIP binary-package directory to PATH
+* Add PIP binary-package directory to PATH  
+This will allow any PIP package installed to be available in path automatically.
 
 
 1.0.0 (June 1, 2018)

@@ -1,10 +1,10 @@
 {
   "variables": {
     "channel": "stable",
-    "coreos_version": "1745.5.0",
-    "coreos_human_version": "1745-5-0",
+    "coreos_version": "1745.7.0",
+    "coreos_human_version": "1745-7-0",
     "checksum_type": "md5",
-    "checksum": "a622e92e3f41b2946b555a790682bb20",
+    "checksum": "9c420e2dd36d893f3b483d796559ca70",
     "ignition_config_filename": "config.ign"
   },
   "builders": [
@@ -69,7 +69,6 @@
       "output": "./builds/{{user `channel`}}/{{.Provider}}/coreos_ansible_{{user `channel`}}_{{ user `coreos_human_version`}}.box",
       "vagrantfile_template": "files/box/Vagrantfile",
       "include": [
-        "files/box/base_mac.rb",
         "files/box/change_host_name.rb",
         "files/box/configure_networks.rb"
       ]
