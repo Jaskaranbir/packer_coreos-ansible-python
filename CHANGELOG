@@ -1,11 +1,18 @@
+1.2.1 (June 26, 2018)
+====================
+* Add "SSL_CERT_FILE" environment variable, set to default system-certificates location  
+Fixes Python SSL errors
+
 1.2.0 (June 25, 2018)
 ====================
 * Updated base Core-OS image to 1745.7.0
 * Disable update-engine.service and locksmithd.service (no automatic system-updates or reboots)
 
+
 1.1.0 (June 8, 2018)
 ====================
 * Fix Vagrant private-network configuration not working
+
 
 1.0.1 (June 4, 2018)
 ====================

@@ -12,3 +12,14 @@ systemd:
       mask: true
     - name: locksmithd.service
       mask: true
+
+# Set SSL-certificates-path environment variable
+# This fixes SSL errors in Python
+storage:
+  files:
+    - path: /etc/profile.env
+      filesystem: root
+      mode: 0644
+      contents:
+        inline: |
+          export SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
