@@ -28,8 +28,13 @@ function install_active_python() {
   rm $HOME/.bashrc
   touch $HOME/.bashrc
   sudo chmod 644 $HOME/.bashrc
+
+  # Add custom-binaries directory to PATH
+  custom_path=$ACTIVE_PYTHON_INSTALL_PATH
   # Add installed PIP packages to local PATH
-  echo "export PATH=$PATH:$ACTIVE_PYTHON_INSTALL_PATH/active_python/bin" >> $HOME/.bashrc
+  custom_path=$custom_path:$ACTIVE_PYTHON_INSTALL_PATH/active_python/bin
+  # Update PATH using bashrc
+  echo "export PATH=$PATH:$custom_path" >> $HOME/.bashrc
   source $HOME/.bashrc
 }
 

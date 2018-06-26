@@ -1,7 +1,13 @@
 1.2.1 (June 26, 2018)
 ====================
+* Fix custom-binaries directory not added to PATH
+
+
+1.2.1 (June 26, 2018)
+====================
 * Add "SSL_CERT_FILE" environment variable, set to default system-certificates location  
 Fixes Python SSL errors
+
 
 1.2.0 (June 25, 2018)
 ====================
