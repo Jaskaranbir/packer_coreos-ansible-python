@@ -1,9 +1,9 @@
-DOCKER_COMPOSE_VERSION=1.21.2
+DOCKER_COMPOSE_VERSION=1.22.0
 
 function get_docker_compose() {
   sudo curl -L https://github.com/docker/compose/releases/download/$DOCKER_COMPOSE_VERSION/docker-compose-Linux-x86_64 -o /opt/bin/docker-compose
 
-  echo "8a11713e11ed73abcb3feb88cd8b5674b3320ba33b22b2ba37915b4ecffdf042 /opt/bin/docker-compose" | sha256sum -c
+  echo "f679a24b93f291c3bffaff340467494f388c0c251649d640e661d509db9d57e9 /opt/bin/docker-compose" | sha256sum -c
   res=$?
 }
 

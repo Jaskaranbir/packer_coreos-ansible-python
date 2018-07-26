@@ -1,10 +1,10 @@
 {
   "variables": {
     "channel": "stable",
-    "coreos_version": "1745.7.0",
-    "coreos_human_version": "1745-7-0",
+    "coreos_version": "1800.4.0",
+    "coreos_human_version": "1800-4-0",
     "checksum_type": "md5",
-    "checksum": "9c420e2dd36d893f3b483d796559ca70",
+    "checksum": "a26beb26f24967d6c81c2d2e70b7ff13",
     "ignition_config_filename": "config.ign"
   },
   "builders": [
